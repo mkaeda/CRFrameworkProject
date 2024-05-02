@@ -1,0 +1,182 @@
+{
+    "name": "TransitionInputActions",
+    "maps": [
+        {
+            "name": "ObjectTransitions",
+            "id": "7129652c-4efc-4e94-8e70-e17e874fe552",
+            "actions": [
+                {
+                    "name": "MoveToAR",
+                    "type": "Button",
+                    "id": "c882077f-0426-42e6-9c25-56e627729e8b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveToDesktop",
+                    "type": "Button",
+                    "id": "b8c18443-7d96-4b0d-920e-8f14efcb0206",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CopyToAR",
+                    "type": "Button",
+                    "id": "15fa9b56-eac6-4374-a8a8-f6a6950a92df",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CopyToDesktop",
+                    "type": "Button",
+                    "id": "086c2305-4ba9-4eaf-87f4-72a8928d4013",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ad671c85-5211-4463-9f62-47ea59e8ac8e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveToAR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6b81d4e-9869-48f6-ac2c-958b169a0588",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveToDesktop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1c0f0c9-fa03-4b9f-a7a0-1a862920fb2f",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CopyToAR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ad22e36-0800-42da-919a-095570f96a3e",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CopyToDesktop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UITransitions",
+            "id": "6f7059df-3d2c-428d-9a7c-4e930f5ffe28",
+            "actions": [
+                {
+                    "name": "MoveToAR",
+                    "type": "Button",
+                    "id": "544cb746-b573-40f6-8da3-e470311c05f0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveToDesktop",
+                    "type": "Button",
+                    "id": "99cd0361-3bc4-4ad5-826b-366691c7ba68",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CopyToAR",
+                    "type": "Button",
+                    "id": "3b830765-1b1c-4b66-9af6-6d98f9e8f41c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CopyToDesktop",
+                    "type": "Button",
+                    "id": "76bcea4a-d441-4b5f-b3b7-d3cb5115433d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cedeca85-c8f3-4582-bfd6-7931c7b56fac",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveToAR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8ed74aa-c239-446b-bf13-1bc3f59ceea7",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveToDesktop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8a3b5eac-b9cc-43c8-b2a3-e6ab10c442c0",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CopyToAR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37536d16-3c1c-4b5a-9d46-833e00b45682",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CopyToDesktop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

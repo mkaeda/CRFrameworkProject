@@ -1,0 +1,4 @@
+repository "CRFrameworkProject@mhmorris@cloud"
+  path "/"
+    br "/main"
+    co "/main"
