@@ -5,8 +5,8 @@ using UnityEngine;
 /// </summary>
 public abstract class AbstractTransitionConfig : MonoBehaviour
 {
-    public abstract void MoveToAR(GameObject target, System.Action callback);
-    public abstract void MoveToDesktop(GameObject target, System.Action callback);
+    public abstract GameObject MoveToAR(GameObject target, System.Action callback);
+    public abstract GameObject MoveToDesktop(GameObject target, System.Action callback);
     public abstract GameObject CopyToAR(GameObject target, System.Action callback);
     public abstract GameObject CopyToDesktop(GameObject target, System.Action callback);
 }

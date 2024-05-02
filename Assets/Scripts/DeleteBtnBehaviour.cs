@@ -8,6 +8,6 @@ public class DeleteBtnBehaviour : MonoBehaviour
     {
         var selectedCube = ObjectSelectionHandler.Instance.GetSelectedObject();
 
-        selectedCube.transform.parent.gameObject.SetActive(false);
+        selectedCube.SetActive(false);
     }
 }

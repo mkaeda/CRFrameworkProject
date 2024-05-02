@@ -11,28 +11,18 @@ public class ObjectTransitionConfig : AbstractTransitionConfig
         var arObj = Instantiate(
             target,
             SystemConfig.Instance.ARCamera.transform.position + SystemConfig.Instance.ARCamera.transform.forward * 1.5f,
-            Quaternion.identity,
+            SystemConfig.Instance.ARCamera.transform.rotation,
             SystemConfig.Instance.ARCamera.transform
         );
-
         // Set the object's parent to the AR camera
         arObj.transform.SetParent(SystemConfig.Instance.ARCamera.transform);
-
-        // Set the object's layer to the AR layer
-        arObj.layer = LayerMask.NameToLayer("AR");
-
+        //arObj.layer = LayerMask.NameToLayer("AR");
         // Set the object's scale to match the AR camera's scale
         arObj.transform.localScale = Vector3.one * SystemConfig.Instance.ARCamera.transform.localScale.x;
 
-        // Set the object's position and rotation to match the AR camera's position and rotation
-        arObj.transform.SetPositionAndRotation(SystemConfig.Instance.ARCamera.transform.position + SystemConfig.Instance.ARCamera.transform.forward * 1.5f, SystemConfig.Instance.ARCamera.transform.rotation);
-
+        // Disable gravity
         arObj.GetComponent<Rigidbody>().useGravity = false;
-        
-        // Enable the object's collider
         arObj.GetComponent<Collider>().enabled = true;
-
-        // Enable the object's renderer
         arObj.GetComponent<Renderer>().enabled = true;
 
         callback?.Invoke();
@@ -42,19 +32,62 @@ public class ObjectTransitionConfig : AbstractTransitionConfig
 
     public override GameObject CopyToDesktop(GameObject target, System.Action callback)
     {
-        callback?.Invoke();
-        return null;
+        // Create a copy of the object in Desktop space
+        var desktopObject = Instantiate(target);
+        // Set the object's parent and layer
+        desktopObject.transform.SetParent(SystemConfig.Instance.DesktopCamera.transform);
+        //desktopObject.layer = LayerMask.NameToLayer("Desktop");
+        //Set the object's scale to match the Desktop camera's scale
+        desktopObject.transform.localScale = Vector3.one * SystemConfig.Instance.DesktopCamera.transform.localScale.x;
+        desktopObject.transform.SetPositionAndRotation(GetDesktopPosition(target), SystemConfig.Instance.DesktopCamera.transform.rotation);
+        // Enable gravity
+        desktopObject.GetComponent<Rigidbody>().useGravity = true;
+        desktopObject.GetComponent<Collider>().enabled = true;
+        desktopObject.GetComponent<Renderer>().enabled = true;
+        // Subscribe new view to the controller class.
+        var desktopCubeView = desktopObject.GetComponent<CubeView>();
+        target.GetComponent<CubeView>().Controller.Subscribe(desktopCubeView);
+
+        // Disable gravity
+        target.GetComponent<Rigidbody>().useGravity = false;
+        target.GetComponent<Collider>().enabled = true;
+        target.GetComponent<Renderer>().enabled = true;
+
+        target.SetActive(true);
+
+        //callback?.Invoke();
+
+        return desktopObject;
     }
 
-    public override void MoveToAR(GameObject target, System.Action callback)
+    public override GameObject MoveToAR(GameObject target, System.Action callback)
     {
-        CopyToAR(target, callback);
+        var arObject = CopyToAR(target, callback);
         target.SetActive(false);
         callback?.Invoke();
+        return arObject;
     }
 
-    public override void MoveToDesktop(GameObject target, System.Action callback)
+    public override GameObject MoveToDesktop(GameObject target, System.Action callback)
     {
+        var desktopObject = CopyToDesktop(target, callback);
+        target.SetActive(false);
         callback?.Invoke();
+        return desktopObject;
+    }
+
+    private Vector3 GetDesktopPosition(GameObject originalARGameObject)
+    {
+        var arCameraPosition = SystemConfig.Instance.ARCamera.transform.position;
+        var desktopCameraPosition = SystemConfig.Instance.DesktopCamera.transform.position;
+        var xOffset = originalARGameObject.transform.localPosition.x - arCameraPosition.x;
+        var zOffset = originalARGameObject.transform.localPosition.z - arCameraPosition.z;
+
+        var position = new Vector3(
+            desktopCameraPosition.x + xOffset,
+            0.5f,
+            desktopCameraPosition.z + zOffset
+        );
+        return position;
     }
 }

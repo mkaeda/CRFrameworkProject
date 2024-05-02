@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 /// <summary>
@@ -65,6 +66,11 @@ public abstract class AbstractController<T> : MonoBehaviour where T : AbstractDa
     public void SetModel(T model)
     {
         _model = model;
+    }
+
+    public ReadOnlyCollection<AbstractView<T>> GetViews()
+    {
+        return Views.AsReadOnly();
     }
 
     /// <summary>
