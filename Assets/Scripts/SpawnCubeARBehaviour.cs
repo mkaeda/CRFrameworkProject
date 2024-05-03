@@ -6,12 +6,12 @@ using UnityEngine.UIElements;
 public class SpawnCubeARBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _controllerPrefab;
+    private GameObject  _controllerPrefab;
 
     [SerializeField]
-    private GameObject _cubePrefab;
+    private GameObject  _cubePrefab;
 
-    private int _numCubes;
+    private int         _numCubes;
 
     private void Start()
     {
@@ -21,32 +21,38 @@ public class SpawnCubeARBehaviour : MonoBehaviour
 
     public void OnClick()
     {
-        var model = ScriptableObject.CreateInstance<Cube>();
-        model.Name = "CubeAR" + (_numCubes + 1).ToString();
-        model.Position = GetSpawnPosition();
+        // Create new instance of Cube model 
+        var model           = ScriptableObject.CreateInstance<Cube>();
+        model.Name          = "CubeAR" + (_numCubes + 1).ToString();
+        model.Position      = GetSpawnPosition();
 
-        // Instantiate the cube prefab using the new Cube instance as the model
-        var cubeInstance = Instantiate(_cubePrefab, model.Position, Quaternion.identity);
-        var cubeController = Instantiate(_controllerPrefab);
+        // Instantiate controller GameObject
+        var cubeController  = Instantiate(_controllerPrefab, Vector3.zero, Quaternion.identity);
 
-        cubeInstance.transform.SetParent(cubeController.transform);
+        // Instantiate Cube GameObject
+        var cubeInstance    = Instantiate(_cubePrefab, model.Position, Quaternion.identity);
+        cubeInstance.name   = model.Name;
 
-        var controller = cubeController.GetComponent<CubeController>();
+        // Get CubeView script component of Cube GameObject
+        var cubeView        = cubeInstance.GetComponent<CubeView>();
+
+        // Initialize script variables for controller and view 
+        // Set model and subscribe cube's view to the controller object
+        var controller      = cubeController.GetComponent<CubeController>();
         controller.SetModel(model);
-
-        var cubeView = cubeInstance.GetComponent<CubeView>();
+        controller.Subscribe(cubeView);
         cubeView.SetController(controller);
-        // Set the object's position and rotation to match the AR camera's position and rotation
-        cubeView.transform.SetPositionAndRotation(
-            SystemConfig.Instance.ARCamera.transform.position + SystemConfig.Instance.ARCamera.transform.forward * 1.5f,
-            SystemConfig.Instance.ARCamera.transform.rotation
-        );
-        // Do not use gravity in AR
+
+        // Turn off gravity in AR so cube is suspended in midair.
         cubeView.GetComponent<Rigidbody>().useGravity = false;
 
-        controller.Subscribe(cubeView);
-        cubeInstance.name = model.Name;
-        cubeController.transform.SetParent(SystemConfig.Instance.ARCamera.transform);
+        // Set the parent of the cubeView to be the AR camera.
+        // isKinematic flag turned on and off to prevent weird behaviours due to 
+        // RigidBody component on the view
+        cubeView.GetComponent<Rigidbody>().isKinematic = true;
+        cubeView.transform.SetParent(SystemConfig.Instance.ARCamera.transform);
+        cubeView.GetComponent<Rigidbody>().isKinematic = false;
+
         _numCubes++;
     }
 

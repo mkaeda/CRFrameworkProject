@@ -6,56 +6,64 @@ using UnityEngine.UIElements;
 public class SpawnCubeBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _plane;
+    private GameObject  _plane;
 
     [SerializeField]
-    private Vector2 _spawnRangeMultiplier;
+    private Vector2     _spawnRangeMultiplier;
 
     [SerializeField]
-    private GameObject _controllerPrefab;
+    private GameObject  _controllerPrefab;
 
     [SerializeField]
-    private GameObject _cubePrefab;
+    private GameObject  _cubePrefab;
 
-    private Bounds _planeBounds;
-    private int _numCubes;
+    private Bounds      _planeBounds;
+    private int         _numCubes;
 
     private void Start()
     {
         // Find the bounds of the plane. If no plane, just use infinity.
-        var collider = _plane.GetComponent<Collider>();
-        _planeBounds = 
-            collider != null 
-            ? collider.bounds 
-            : new Bounds(Vector3.negativeInfinity, Vector3.positiveInfinity);
-        _numCubes = 0;
-        _spawnRangeMultiplier = new Vector2(0.5f, 0.5f);
-
+        var collider            = _plane.GetComponent<Collider>();
+        _planeBounds            = collider != null 
+                                    ? collider.bounds 
+                                    : new Bounds(Vector3.negativeInfinity, Vector3.positiveInfinity);
+        _numCubes               = 0;
+        _spawnRangeMultiplier   = new Vector2(0.5f, 0.5f);
     }
 
     public void OnClick()
     {
-        var model = ScriptableObject.CreateInstance<Cube>();
-        model.Name = "Cube" + (_numCubes + 1).ToString();
-        model.Position = GetRandomSpawnPosition();
+        // Create new instance of Cube model
+        var model           = ScriptableObject.CreateInstance<Cube>();
+        model.Name          = "Cube" + (_numCubes + 1).ToString();
+        model.Position      = GetRandomSpawnPosition();
 
-        // Instantiate the cube prefab using the new Cube instance as the model
-        var cubeInstance = Instantiate(_cubePrefab, model.Position, Quaternion.identity);
-        var cubeController = Instantiate(_controllerPrefab);
+        // Instantiate controller GameObject
+        var cubeController  = Instantiate(_controllerPrefab, Vector3.zero, Quaternion.identity);
+        
+        // Instantiate Cube GameObject
+        var cubeInstance    = Instantiate(_cubePrefab, model.Position, Quaternion.identity);
+        cubeInstance.name   = model.Name;
 
-        cubeInstance.transform.SetParent(cubeController.transform);
+        // Get CubeView script component of Cube GameObject
+        var cubeView = cubeInstance.GetComponent<CubeView>();
 
+        // Initialize script variables for controller and view 
+        // Set model and subscribe cube's view to the controller object
         var controller = cubeController.GetComponent<CubeController>();
         controller.SetModel(model);
-
-        var cubeView = cubeInstance.GetComponent<CubeView>();
+        controller.Subscribe(cubeView);
         cubeView.SetController(controller);
 
-        controller.Subscribe(cubeView);
+        // Turn on gravity on desktop so cube falls to rest on plane.
+        cubeView.GetComponent<Rigidbody>().useGravity = true;
 
-        cubeInstance.name = model.Name;
-
-        cubeController.transform.SetParent(SystemConfig.Instance.DesktopCamera.transform);
+        // Set the parent of the cubeView to be the AR camera.
+        // isKinematic flag turned on and off to prevent weird behaviours due to 
+        // RigidBody component on the view
+        cubeView.GetComponent<Rigidbody>().isKinematic = true;
+        cubeView.transform.SetParent(SystemConfig.Instance.DesktopCamera.transform);
+        cubeView.GetComponent<Rigidbody>().isKinematic = false;
 
         _numCubes++;
     }

@@ -9,17 +9,13 @@ public class CubeTransitionToARBehaviour : MonoBehaviour
 
     public void OnMoveToARClick()
     {
-        Debug.Log("Moving object to AR...");
         _transitionManager.MoveToAR(ObjectSelectionHandler.Instance.GetSelectedObject(), null);
+        Debug.Log("Cube moved to AR.");
     }
 
     public void OnCopyToARClick()
-    {
-        Debug.Log("Copying object to AR...");
-        var target = ObjectSelectionHandler.Instance.GetSelectedObject();
-        var createdARObject = _transitionManager.CopyToAR(target, null);
-        var cubeView = createdARObject.GetComponent<CubeView>();
-        var controller = target.GetComponent<CubeView>().Controller;
-        controller.Subscribe(cubeView);
+    { 
+        _transitionManager.CopyToAR(ObjectSelectionHandler.Instance.GetSelectedObject(), null);
+        Debug.Log("Cube copied to AR.");
     }
 }
